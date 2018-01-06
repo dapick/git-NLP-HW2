@@ -29,16 +29,16 @@ class MyTestCase(unittest.TestCase):
         inference.label()
         inference.calculate_accuracy(inference.labeled_file_name, Consts.PATH_TO_TEST_LABELED_FROM_TEST)
 
-    def test_20_iterations(self):
+    def test_N_iterations(self):
         t1 = time()
-        Training(Consts.BASIC_MODEL, 20, Consts.PATH_TO_TRAINING_FROM_TEST, Consts.FEATURE_LIST_BASIC)
+        Training(Consts.BASIC_MODEL, 80, Consts.PATH_TO_TRAINING_FROM_TEST, Consts.FEATURE_LIST_BASIC)
         with open('runningTimes', 'a') as f:
-            print("Took " + str(time() - t1) + " seconds to train with 20 iterations", file=f)
+            print("Took " + str(time() - t1) + " seconds to train with 80 iterations", file=f)
         t1 = time()
-        inference = Inference(Consts.PATH_TO_TEST_UNLABELED_FROM_TEST, Consts.BASIC_MODEL, 20)
+        inference = Inference(Consts.PATH_TO_TEST_UNLABELED_FROM_TEST, Consts.BASIC_MODEL, 80)
         inference.label()
         with open('runningTimes', 'a') as f:
-            print("Took " + str(time() - t1) + " seconds to label with 20 iterations", file=f)
+            print("Took " + str(time() - t1) + " seconds to label with 80 iterations", file=f)
         inference.calculate_accuracy(inference.labeled_file_name, Consts.PATH_TO_TEST_LABELED_FROM_TEST)
 
 
