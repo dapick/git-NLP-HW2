@@ -26,7 +26,7 @@ class Parsing:
                 self.labeled_table_data.append({})
                 self.labeled_table_data[sentence_idx]['words'] = ["root"]
                 self.labeled_table_data[sentence_idx]['tags'] = ["*"]
-                self.labeled_table_data[sentence_idx]['heads'] = ["*"]
+                self.labeled_table_data[sentence_idx]['heads'] = [0]
                 self.labeled_table_data[sentence_idx]['edges'] = set()
 
             self.labeled_table_data[sentence_idx]['words'].append(line[self.column['WORD']])
@@ -35,6 +35,8 @@ class Parsing:
             h = int(line[self.column['HEAD_IDX']])
             m = int(line[self.column['WORD_IDX']])
             self.labeled_table_data[sentence_idx]['edges'] |= {(h, m)}
+
+        return self.labeled_table_data
 
     def parse_list_of_dict_to_labeled_file(self, file_full_name: str):
         with open(file_full_name, 'w+') as f:
@@ -83,3 +85,5 @@ class Parsing:
 
             self.unlabeled_table[sentence_idx]['words'].append(line[self.column['WORD']])
             self.unlabeled_table[sentence_idx]['tags'].append(line[self.column['POS']])
+
+        return self.unlabeled_table
