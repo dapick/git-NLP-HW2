@@ -40,7 +40,7 @@ class Parsing:
 
     def parse_list_of_dict_to_labeled_file(self, file_full_name: str, words_tags: dict, heads: list):
         with open(file_full_name, 'w+') as f:
-            for sen_idx, sentence in words_tags.items():
+            for sen_idx, sentence in enumerate(words_tags):
                 for idx in range(1, len(sentence['words'])):
                     line = str(idx) + "\t" + sentence['words'][idx] + "\t_\t" + sentence['tags'][idx] + \
                            "\t_\t_\t" + str(heads[sen_idx][idx]) + "\t_\t_\t_\n"

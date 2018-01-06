@@ -9,6 +9,7 @@ class Consts:
 
     PATH_TO_TRAINING_FROM_TEST = "../HW2-files/train.labeled"
     PATH_TO_TEST_UNLABELED_FROM_TEST = "../HW2-files/test.unlabeled"
+    PATH_TO_TEST_LABELED_FROM_TEST = "../HW2-files/test.labeled"
 
     # Paths for testing
     PATH_TO_5_SENTENCES = "smaller_sentences/5_sentences.labeled"

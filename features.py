@@ -7,8 +7,9 @@ import numpy as np
 
 
 class Features:
-    def __init__(self, method: str, model: str, file_full_name: str=None, used_features: list=None):
+    def __init__(self, method: str, model: str, N: int, file_full_name: str = None, used_features: list = None):
         self.model = model
+        self.N = N
 
         if method == Consts.TRAIN:
             self._training(used_features, file_full_name)
@@ -33,16 +34,17 @@ class Features:
         self._calculate_f_score_per_sentence()
 
         # Saves values
-        with open("../data_from_training/" + self.model + "/internal_values_of_feature", 'wb') as f:
+        with open("../data_from_training/" + self.model + "/" + str(self.N) + "/internal_values_of_feature", 'wb') as f:
             pickle.dump([self.feature_vector, self.used_features], f, protocol=-1)
 
     def _set_internal_values(self, file_full_name: str):
         # Restore values
-        with open("../data_from_training/" + self.model + "/internal_values_of_feature", 'rb') as f:
+        with open("../data_from_training/" + self.model + "/" + str(self.N) + "/internal_values_of_feature", 'rb') as f:
             self.feature_vector, self.used_features = pickle.load(f)
 
         self.hm_data = Parsing().parse_unlabeled_file_to_list_of_dict(file_full_name)
         self._calculate_features_for_all_sen_hm()
+        self.sentences_amount = len(self.hm_data)
 
     def _light_features(self):
         for _ in range(0, len(self.hm_data)):

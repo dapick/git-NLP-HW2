@@ -10,16 +10,19 @@ from time import time
 
 
 class Training:
-    def __init__(self, model: str, file_full_name: str, used_features: list):
+    def __init__(self, model: str, N: int, file_full_name: str, used_features: list):
         self.model = model
-        self.feature = Features(Consts.TRAIN, model, file_full_name, used_features)
-        self.w_parameter = np.zeros(self.feature.features_amount)
+        self.feature = Features(Consts.TRAIN, model, N, file_full_name, used_features)
+        self.w_parameter = np.zeros(self.feature.features_amount, dtype='int64')
         self.successors_per_sentence = ChuLiuWrapper(self.feature.hm_data).sentences_klicks
-        self.perceptron(20)
+        self.perceptron(N)
 
         # Saves values
-        with open("../data_from_training/" + self.model + "/w_parameter", 'wb') as f:
-            pickle.dump([self.w_parameter], f, protocol=-1)
+        with open("../data_from_training/" + self.model + "/" + str(N) + "/w_parameter", 'wb') as f:
+            pickle.dump(self.w_parameter, f, protocol=-1)
+        with open("../data_from_training/" + self.model + "/" + str(N) + "/w_as_list", 'w+') as f:
+            for feature_weight in self.w_parameter:
+                print(feature_weight, file=f)
 
     def get_score(self, sen_idx: int, h: int, m: int):
         return np.sum(self.w_parameter[self.feature.sentence_hm[(sen_idx, (h, m))]])
