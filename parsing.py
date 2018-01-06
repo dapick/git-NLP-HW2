@@ -80,8 +80,7 @@ class Parsing:
                 self.unlabeled_table.append({})
                 self.unlabeled_table[sentence_idx]['words'] = ["root"]
                 self.unlabeled_table[sentence_idx]['tags'] = ["*"]
-                self.unlabeled_table[sentence_idx]['heads'] = ["*"]
-                self.unlabeled_table[sentence_idx]['edges'] = set()
+                self.unlabeled_table[sentence_idx]['heads'] = [0]
 
             self.unlabeled_table[sentence_idx]['words'].append(line[self.column['WORD']])
             self.unlabeled_table[sentence_idx]['tags'].append(line[self.column['POS']])

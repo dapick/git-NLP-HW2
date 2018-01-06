@@ -1,16 +1,18 @@
 from parsing import Parsing
 from consts import Consts
 
+import pickle
+
 
 class Features:
+    def __init__(self, method: str, model: str, used_features: list, file_full_name: str):
+        self.model = model
 
-    def __init__(self, method: str, model: str, used_features: list=None, file_full_name: str=None):
         if method == Consts.TRAIN:
-            self.model = model
             self._training(used_features, file_full_name)
 
         elif method == Consts.LABEL:
-            self.hm_data = Parsing().parse_unlabeled_file_to_list_of_dict(file_full_name)
+            self._set_internal_values(file_full_name)
 
     def _training(self, used_features: list, file_full_name: str=Consts.PATH_TO_TRAINING):
         self.used_features = used_features
@@ -23,9 +25,20 @@ class Features:
 
         self._light_features()
 
+        # Saves values
+        with open("../data_from_training/" + self.model + "/internal_values_of_feature", 'wb') as f:
+            pickle.dump([self.feature_vector, self.used_features], f, protocol=-1)
+
+    def _set_internal_values(self, file_full_name: str):
+        self.hm_data = Parsing().parse_unlabeled_file_to_list_of_dict(file_full_name)
+
+        # Restore values
+        with open("../data_from_training/" + self.model + "/internal_values_of_feature", 'rb') as f:
+            self.feature_vector, self.used_features = pickle.load(f)
 
     def _light_features(self):
-        [self.hm_match_feature.append({}) for i in range(0, len(self.hm_data))]
+        for _ in range(0, len(self.hm_data)):
+            self.hm_match_feature.append({})
 
         for feature in self.used_features:
             Consts.print_info("_light_features", "Building feature " + feature)
@@ -34,10 +47,8 @@ class Features:
                     tup = self._feature_hm_match_data(sen_idx, h_m, feature)
                     self.feature_structure((feature, tup))
                     if h_m not in self.hm_match_feature[sen_idx]:
-                        self.hm_match_feature[sen_idx][h_m] = set()
-                    self.hm_match_feature[sen_idx][h_m].add(tup)
-
-
+                        self.hm_match_feature[sen_idx][h_m] = []
+                    self.hm_match_feature[sen_idx][h_m].append(self.feature_vector[(feature, tup)][0])
 
     # Gives an index for each feature and count how many time it was used
     def feature_structure(self, keys: tuple):
@@ -48,7 +59,6 @@ class Features:
         else:
             self.feature_vector[keys][1] += 1
             self.features_occurrences[self.feature_vector[keys][0]] += 1
-
 
     # given feature and (h,m) returns relevant data by feature number
     def _feature_hm_match_data(self, sen_idx: int, hm: tuple, feature: str):
@@ -86,130 +96,11 @@ class Features:
                 for key, val in x.items():
                     f.write("\t" + str(key) + " => " + str(val) + "\n")
 
+    def get_features_idx_per_h_m(self, sen_idx, hm):
+        features_idx = []
+        for feature in self.used_features:
+            key = self._feature_hm_match_data(sen_idx, hm, feature)
+            if self.feature_vector.get((feature, key)):
+                features_idx.append(self.feature_vector[(feature, key)][0])
 
-    # def feature_1(self):
-    #     Consts.print_info("feature_1", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             p_word = sentence['words'][p]
-    #             p_pos = sentence['tags'][p]
-    #             self.feature_structure(("1", (p_word, p_pos)))
-    #
-    #
-    # def feature_2(self):
-    #     Consts.print_info("feature_2", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             p_word = sentence['words'][p]
-    #             self.feature_structure(("2", p_word))
-    #
-    # def feature_3(self):
-    #     Consts.print_info("feature_3", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             p_pos = sentence['tags'][p]
-    #             self.feature_structure(("3", p_pos))
-    #
-    # def feature_4(self):
-    #     Consts.print_info("feature_4", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             c = h_m[1]
-    #             c_word = sentence['words'][c]
-    #             c_pos = sentence['tags'][c]
-    #             self.feature_structure(("4", (c_word, c_pos)))
-    #
-    # def feature_5(self):
-    #     Consts.print_info("feature_5", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             c = h_m[1]
-    #             c_word = sentence['words'][c]
-    #             self.feature_structure(("5", c_word))
-    #
-    # def feature_6(self):
-    #     Consts.print_info("feature_6", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             c = h_m[1]
-    #             c_pos = sentence['tags'][c]
-    #             self.feature_structure(("6", c_pos))
-    #
-    # def feature_7(self):
-    #     Consts.print_info("feature_7", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             c = h_m[1]
-    #             p_word = sentence['words'][p]
-    #             p_pos = sentence['tags'][p]
-    #             c_word = sentence['words'][c]
-    #             c_pos = sentence['tags'][c]
-    #             self.feature_structure(("7", (p_word, p_pos, c_word, c_pos)))
-    #
-    # def feature_8(self):
-    #     Consts.print_info("feature_8", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             c = h_m[1]
-    #             p_pos = sentence['tags'][p]
-    #             c_word = sentence['words'][c]
-    #             c_pos = sentence['tags'][c]
-    #             self.feature_structure(("8", (p_pos, c_word, c_pos)))
-    #
-    # def feature_9(self):
-    #     Consts.print_info("feature_9", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             c = h_m[1]
-    #             p_word = sentence['words'][p]
-    #             c_word = sentence['words'][c]
-    #             c_pos = sentence['tags'][c]
-    #             self.feature_structure(("9", (p_word, c_word, c_pos)))
-    #
-    # def feature_10(self):
-    #     Consts.print_info("feature_10", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             c = h_m[1]
-    #             p_word = sentence['words'][p]
-    #             p_pos = sentence['tags'][p]
-    #             c_pos = sentence['tags'][c]
-    #             self.feature_structure(("10", (p_word, p_pos, c_pos)))
-    #
-    # def feature_11(self):
-    #     Consts.print_info("feature_11", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             c = h_m[1]
-    #             p_word = sentence['words'][p]
-    #             p_pos = sentence['tags'][p]
-    #             c_word = sentence['words'][c]
-    #             self.feature_structure(("11", (p_word, p_pos, c_word)))
-    #
-    # def feature_12(self):
-    #     Consts.print_info("feature_12", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             c = h_m[1]
-    #             p_word = sentence['words'][p]
-    #             c_word = sentence['words'][c]
-    #             self.feature_structure(("12", (p_word, c_word)))
-    #
-    # def feature_13(self):
-    #     Consts.print_info("feature_13", "Building")
-    #     for sentence in self.hm_data:
-    #         for h_m in sentence['edges']:
-    #             p = h_m[0]
-    #             c = h_m[1]
-    #             p_pos = sentence['tags'][p]
-    #             c_pos = sentence['tags'][c]
-    #             self.feature_structure(("13", (p_pos, c_pos)))
+        return features_idx
