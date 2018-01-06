@@ -22,6 +22,7 @@ class Inference(object):
         # elif model == Consts.ADVANCED_MODEL:
         #     self.model = AdvancedModel(Consts.TAG)
 
+        # Restores values
         with open("../data_from_training/" + self.model_type + "/" + str(N) + "/w_parameter", 'rb') as f:
             self.model.w_parameter = pickle.load(f)
 
