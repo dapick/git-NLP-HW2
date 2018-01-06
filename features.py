@@ -2,10 +2,12 @@ from parsing import Parsing
 from consts import Consts
 
 import pickle
+from time import time
+import numpy as np
 
 
 class Features:
-    def __init__(self, method: str, model: str, used_features: list, file_full_name: str):
+    def __init__(self, method: str, model: str, file_full_name: str=None, used_features: list=None):
         self.model = model
 
         if method == Consts.TRAIN:
@@ -24,17 +26,23 @@ class Features:
         self.hm_data = Parsing().parse_labeled_file_to_list_of_dict(file_full_name)
 
         self._light_features()
+        self.features_amount = len(self.feature_vector)
+        self.sentences_amount = len(self.hm_data)
+
+        self._calculate_features_for_all_sen_hm()
+        self._calculate_f_score_per_sentence()
 
         # Saves values
         with open("../data_from_training/" + self.model + "/internal_values_of_feature", 'wb') as f:
             pickle.dump([self.feature_vector, self.used_features], f, protocol=-1)
 
     def _set_internal_values(self, file_full_name: str):
-        self.hm_data = Parsing().parse_unlabeled_file_to_list_of_dict(file_full_name)
-
         # Restore values
         with open("../data_from_training/" + self.model + "/internal_values_of_feature", 'rb') as f:
             self.feature_vector, self.used_features = pickle.load(f)
+
+        self.hm_data = Parsing().parse_unlabeled_file_to_list_of_dict(file_full_name)
+        self._calculate_features_for_all_sen_hm()
 
     def _light_features(self):
         for _ in range(0, len(self.hm_data)):
@@ -85,12 +93,12 @@ class Features:
             "13": (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c])
         }[feature]
 
-    def print_features_to_file(self):
-        with open('../data_from_training/' + self.model + '/feature_vector', 'w+') as f:
+    def print_features_to_file(self, dir_name: str):
+        with open(dir_name + self.model + '/feature_vector', 'w+') as f:
             for key, values in self.feature_vector.items():
                 f.write(str(key) + " => " + str(values) + "\n")
 
-        with open('../data_from_training/' + self.model + '/h_m_match_to_feature', 'w+') as f:
+        with open(dir_name + self.model + '/h_m_match_to_feature', 'w+') as f:
             for i, x in enumerate(self.hm_match_feature):
                 f.write(str(i) + " =>\n")
                 for key, val in x.items():
@@ -104,3 +112,35 @@ class Features:
                 features_idx.append(self.feature_vector[(feature, key)][0])
 
         return features_idx
+
+    # Saves for each sentence and (h, m) a list of the features its light
+    def _calculate_features_for_all_sen_hm(self):
+        Consts.print_info("_calculate_features_for_all_sen_hm", "Preprocessing")
+        Consts.TIME = 1
+        t1 = time()
+        self.sentence_hm = {}
+
+        for sen_idx, sentence in enumerate(self.hm_data):
+            for i in range(len(sentence['words'])):
+                for j in range(1, len(sentence['words'])):
+                    if i == j:
+                        continue
+                    self.sentence_hm[(sen_idx, (i, j))] = np.array(self.get_features_idx_per_h_m(sen_idx, (i, j)))
+
+        Consts.print_time("_calculate_features_for_all_sen_hm", time() - t1)
+
+    def _calculate_f_score_per_sentence(self):
+        Consts.print_info("_calculate_f_score_per_sentence", "Preprocessing")
+        Consts.TIME = 1
+        t1 = time()
+        f_scores = []
+        for sen_idx in range(self.sentences_amount):
+            f_scores.append(np.zeros(self.features_amount))
+
+        for sen_idx, sen_dict in enumerate(self.hm_match_feature):
+            for features_list in sen_dict.values():
+                f_scores[sen_idx][features_list] += 1
+
+        for sen_idx, sen_dict in enumerate(self.hm_match_feature):
+            sen_dict['f_score'] = f_scores[sen_idx]
+        Consts.print_time("_calculate_f_score_per_sentence", time() - t1)

@@ -38,12 +38,12 @@ class Parsing:
 
         return self.labeled_table_data
 
-    def parse_list_of_dict_to_labeled_file(self, file_full_name: str):
+    def parse_list_of_dict_to_labeled_file(self, file_full_name: str, words_tags: dict, heads: list):
         with open(file_full_name, 'w+') as f:
-            for sentence in self.labeled_table_data:
+            for sen_idx, sentence in words_tags.items():
                 for idx in range(1, len(sentence['words'])):
-                    line = str(idx) + "\t" + sentence['words'][idx] + "\t_\t" + sentence['tags'][idx] +\
-                           "\t_\t_\t" + str(sentence['heads'][idx]) + "\t_\t_\t_\n"
+                    line = str(idx) + "\t" + sentence['words'][idx] + "\t_\t" + sentence['tags'][idx] + \
+                           "\t_\t_\t" + str(heads[sen_idx][idx]) + "\t_\t_\t_\n"
                     f.write(line)
                 f.write("\n")
 
