@@ -35,7 +35,7 @@ class Inference(object):
             ret_file = file_name[0] + "_m1_"
         elif self.model_type == Consts.ADVANCED_MODEL:
             ret_file = file_name[0] + "_m2_"
-        ret_file = ret_file + "302988217.labeled"
+        ret_file = ret_file + "302988217.wtag"
         return ret_file
 
     def get_score(self, sen_idx: int, h: int, m: int):
