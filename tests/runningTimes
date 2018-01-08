@@ -5,3 +5,7 @@ Accuracy is: 32.59624876604146%
 Took 18889.881851434708 seconds to train with 80 iterations
 Took 141.34323525428772 seconds to label with 80 iterations
 Accuracy is: 33.1964461994077%
+
+Took 22867.469105243683 seconds to train with 100 iterations
+Took 141.8051745891571 seconds to label with 100 iterations
+Accuracy is: 32.999012833168806%
