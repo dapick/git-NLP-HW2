@@ -10,6 +10,9 @@ class Features:
     def __init__(self, method: str, model: str, N: int, file_full_name: str = None, used_features: list = None):
         self.model = model
         self.N = N
+        self.features_funcs = {"1": self.feature_1, "2": self.feature_2, "3": self.feature_3, "4": self.feature_4,
+                               "5": self.feature_5, "6": self.feature_6, "8": self.feature_8, "10": self.feature_10,
+                               "13": self.feature_13}
 
         if method == Consts.TRAIN:
             self._training(used_features, file_full_name)
@@ -39,9 +42,14 @@ class Features:
         with open("../data_from_training/" + self.model + "/" + str(self.N) + '/feature_vector', 'w+') as f:
             for key, values in self.feature_vector.items():
                 f.write(str(key) + " => " + str(values) + "\n")
+        with open("../data_from_training/" + self.model + "/" + str(self.N) + '/h_m_match_to_feature', 'w+') as f:
+            for i, x in enumerate(self.hm_match_feature):
+                f.write(str(i) + " =>\n")
+                for key, val in x.items():
+                    f.write("\t" + str(key) + " => " + str(val) + "\n")
 
     def _set_internal_values(self, file_full_name: str):
-        # Restore values
+        # Restores values
         with open("../data_from_training/" + self.model + "/" + str(self.N) + "/internal_values_of_feature", 'rb') as f:
             self.feature_vector, self.used_features = pickle.load(f)
 
@@ -57,46 +65,67 @@ class Features:
             Consts.print_info("_light_features", "Building feature " + feature)
             for sen_idx, sentence in enumerate(self.hm_data):
                 for h_m in sentence['edges']:
-                    tup = self._feature_hm_match_data(sen_idx, h_m, feature)
-                    self.feature_structure((feature, tup))
-                    if h_m not in self.hm_match_feature[sen_idx]:
-                        self.hm_match_feature[sen_idx][h_m] = []
-                    self.hm_match_feature[sen_idx][h_m].append(self.feature_vector[(feature, tup)][0])
+                    keys_per_feature = self.features_funcs[feature](sen_idx, h_m)
+                    for keys in keys_per_feature:
+                        feature_idx = self.feature_structure(keys)
+                        if h_m not in self.hm_match_feature[sen_idx]:
+                            self.hm_match_feature[sen_idx][h_m] = []
+                        self.hm_match_feature[sen_idx][h_m].append(feature_idx)
 
     # Gives an index for each feature and count how many times it was used
     def feature_structure(self, keys: tuple):
         if keys not in self.feature_vector:
             self.feature_vector[keys] = [self.idx, 1]
             self.features_occurrences.append(1)
+            feature_idx = self.idx
             self.idx += 1
         else:
             self.feature_vector[keys][1] += 1
             self.features_occurrences[self.feature_vector[keys][0]] += 1
+            feature_idx = self.feature_vector[keys][0]
 
-    # given feature and (h,m) returns relevant data by feature number
-    def _feature_hm_match_data(self, sen_idx: int, hm: tuple, feature: str):
+        return feature_idx
+
+    def feature_1(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        return [("1", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p]))]
+
+    def feature_2(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        return [("2", (self.hm_data[sen_idx]['words'][p]))]
+
+    def feature_3(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        return [("3", (self.hm_data[sen_idx]['tags'][p]))]
+
+    def feature_4(self, sen_idx: int, hm: tuple):
+        c = hm[1]
+        return [("4", (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c]))]
+
+    def feature_5(self, sen_idx: int, hm: tuple):
+        c = hm[1]
+        return [("5", (self.hm_data[sen_idx]['words'][c]))]
+
+    def feature_6(self, sen_idx: int, hm: tuple):
+        c = hm[1]
+        return [("6", (self.hm_data[sen_idx]['tags'][c]))]
+
+    def feature_8(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return {
-            "1": (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p]),
-            "2": (self.hm_data[sen_idx]['words'][p]),
-            "3": (self.hm_data[sen_idx]['tags'][p]),
-            "4": (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c]),
-            "5": (self.hm_data[sen_idx]['words'][c]),
-            "6": (self.hm_data[sen_idx]['tags'][c]),
-            "7": (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
-                  self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c]),
-            "8": (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
-                  self.hm_data[sen_idx]['tags'][c]),
-            "9": (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['words'][c],
-                  self.hm_data[sen_idx]['tags'][c]),
-            "10": (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
-                   self.hm_data[sen_idx]['tags'][c]),
-            "11": (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
-                   self.hm_data[sen_idx]['words'][c]),
-            "12": (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['words'][c]),
-            "13": (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c])
-        }[feature]
+        return [("8", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
+                self.hm_data[sen_idx]['tags'][c]))]
+
+    def feature_10(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        c = hm[1]
+        return [("10", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
+                self.hm_data[sen_idx]['tags'][c]))]
+
+    def feature_13(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        c = hm[1]
+        return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c]))]
 
     def print_features_to_file(self, dir_name: str):
         with open(dir_name + self.model + '/feature_vector', 'w+') as f:
@@ -112,10 +141,10 @@ class Features:
     def get_features_idx_per_h_m(self, sen_idx, hm):
         features_idx = []
         for feature in self.used_features:
-            key = self._feature_hm_match_data(sen_idx, hm, feature)
-            if self.feature_vector.get((feature, key)):
-                features_idx.append(self.feature_vector[(feature, key)][0])
-
+            keys_per_feature = self.features_funcs[feature](sen_idx, hm)
+            for keys in keys_per_feature:
+                if self.feature_vector.get(keys):
+                    features_idx.append(self.feature_vector[keys][0])
         return features_idx
 
     # Saves for each sentence and (h, m) a list of the features its light
