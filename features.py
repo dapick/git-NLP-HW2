@@ -36,6 +36,9 @@ class Features:
         # Saves values
         with open("../data_from_training/" + self.model + "/" + str(self.N) + "/internal_values_of_feature", 'wb') as f:
             pickle.dump([self.feature_vector, self.used_features], f, protocol=-1)
+        with open("../data_from_training/" + self.model + "/" + str(self.N) + '/feature_vector', 'w+') as f:
+            for key, values in self.feature_vector.items():
+                f.write(str(key) + " => " + str(values) + "\n")
 
     def _set_internal_values(self, file_full_name: str):
         # Restore values
@@ -60,7 +63,7 @@ class Features:
                         self.hm_match_feature[sen_idx][h_m] = []
                     self.hm_match_feature[sen_idx][h_m].append(self.feature_vector[(feature, tup)][0])
 
-    # Gives an index for each feature and count how many time it was used
+    # Gives an index for each feature and count how many times it was used
     def feature_structure(self, keys: tuple):
         if keys not in self.feature_vector:
             self.feature_vector[keys] = [self.idx, 1]
