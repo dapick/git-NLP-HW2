@@ -1,7 +1,7 @@
 from chuliuwrapper import ChuLiuWrapper
+from features import Features
 from parsing import Parsing
 from consts import Consts
-from model import BasicModel
 from chu_liu import Digraph
 
 from multiprocessing.pool import Pool
@@ -16,17 +16,14 @@ class Inference(object):
         self.file_full_name = file_full_name
         self.model_type = model
         self.labeled_file_name = self._get_labeled_file_name()
-
-        if model == Consts.BASIC_MODEL:
-            self.model = BasicModel(Consts.LABEL, N, file_full_name)
-        # elif model == Consts.ADVANCED_MODEL:
-        #     self.model = AdvancedModel(Consts.TAG)
+        self.feature = Features(Consts.LABEL, self.model_type, N, file_full_name)
 
         # Restores values
         with open("../data_from_training/" + self.model_type + "/" + str(N) + "/w_parameter", 'rb') as f:
-            self.model.w_parameter = pickle.load(f)
+            self.w_parameter = pickle.load(f)
 
-        self.successors_per_sentence = ChuLiuWrapper(self.model.feature.hm_data).sentences_klicks
+        self.successors_per_sentence = ChuLiuWrapper(self.feature.hm_data).sentences_klicks
+        self.label()
 
     def _get_labeled_file_name(self):
         ret_file = self.file_full_name
@@ -39,13 +36,13 @@ class Inference(object):
         return ret_file
 
     def get_score(self, sen_idx: int, h: int, m: int):
-        return np.sum(self.model.w_parameter[self.model.feature.sentence_hm[(sen_idx, (h, m))]])
+        return np.sum(self.w_parameter[self.feature.sentence_hm[(sen_idx, (h, m))]])
 
     def _label_sentence(self, sen_idx):
         Consts.TIME = 1
         t1 = time()
         y_max = Digraph(self.successors_per_sentence[sen_idx], partial(self.get_score, sen_idx)).mst().successors
-        heads = np.zeros(len(self.model.feature.hm_data[sen_idx]['words']), dtype='int64')
+        heads = np.zeros(len(self.feature.hm_data[sen_idx]['words']), dtype='int64')
         for head in y_max:
             for modifier in y_max[head]:
                 heads[modifier] = head
@@ -58,11 +55,11 @@ class Inference(object):
         Consts.TIME = 1
         t1 = time()
 
-        # Run parallel - good when checking many sentences
+        # Run parallel
         with Pool(3) as pool:
-            labels_list_per_sentence = pool.map(self._label_sentence, range(self.model.feature.sentences_amount))
+            labels_list_per_sentence = pool.map(self._label_sentence, range(self.feature.sentences_amount))
 
-        Parsing().parse_list_of_dict_to_labeled_file(self.labeled_file_name, self.model.feature.hm_data,
+        Parsing().parse_list_of_dict_to_labeled_file(self.labeled_file_name, self.feature.hm_data,
                                                      list(labels_list_per_sentence))
         Consts.print_time("Labeling file", time() - t1)
 
