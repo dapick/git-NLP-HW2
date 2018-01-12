@@ -11,3 +11,7 @@ Took 22867.469105243683 seconds to train with 100 iterations
 Took 141.8051745891571 seconds to label with 100 iterations
 Accuracy is: 30.244604316546763%
 
+Took 5716.668741703033 seconds to train 'advanced' with 20 iterations
+Took 164.04568433761597 seconds to label 'advanced' with 20 iterations
+Accuracy is: 74.82014388489209%
+
