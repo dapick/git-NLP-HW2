@@ -132,7 +132,7 @@ class Features:
         p = hm[0]
         c = hm[1]
         min_word_idx = min(p, c)
-        max_word_idx = min(p, c)
+        max_word_idx = max(p, c)
         keys = []
         for word_idx in range(min_word_idx + 1, max_word_idx):
             keys += [("tags_between", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][word_idx],
@@ -146,8 +146,9 @@ class Features:
         for p_shift, c_shift in [(1, 1), (-1, -1), (1, -1), (-1, 1)]:
             if 0 <= p + p_shift < len(self.hm_data[sen_idx]['tags']) and \
                0 <= c + c_shift < len(self.hm_data[sen_idx]['tags']):
-                keys += [("tags_between", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][p + p_shift],
-                                           self.hm_data[sen_idx]['tags'][c], self.hm_data[sen_idx]['tags'][c + c_shift]))]
+                keys += [("contextual_tags",
+                          (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][p + p_shift],
+                           self.hm_data[sen_idx]['tags'][c], self.hm_data[sen_idx]['tags'][c + c_shift]))]
         return keys
 
     def get_features_idx_per_h_m(self, sen_idx, hm):
@@ -190,3 +191,8 @@ class Features:
         for sen_idx, sen_dict in enumerate(self.hm_match_feature):
             sen_dict['f_score'] = f_scores[sen_idx]
         Consts.print_time("_calculate_f_score_per_sentence", time() - t1)
+
+    def count_features_types(self):
+        for feature_type in self.used_features:
+            count_feature = sum([1 if feature_num == feature_type else 0 for feature_num, _ in self.feature_vector])
+            Consts.print_info("feature_" + feature_type, "Has " + str(count_feature) + " features")
