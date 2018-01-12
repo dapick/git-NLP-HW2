@@ -8,9 +8,9 @@ class ChuLiuWrapper:
         list_of_klicks = []
         for idx, sentence in enumerate(self.sentences):
             list_of_klicks.append({})
-            list_of_klicks[idx][0] = list(range(1, len(sentence['words'])))
-            for i in range(1, len(sentence['words'])):
-                list_of_klicks[idx][i] = list((range(1, i))) + list(range(i + 1, len(sentence['words'])))
+            list_of_klicks[idx][0] = list(range(1, len(sentence['words'])-1))
+            for i in range(1, len(sentence['words'])-1):
+                list_of_klicks[idx][i] = list((range(1, i))) + list(range(i + 1, len(sentence['words'])-1))
 
         return list_of_klicks
 

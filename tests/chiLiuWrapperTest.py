@@ -13,5 +13,6 @@ class FeaturesTestCase(unittest.TestCase):
         wrapper = ChuLiuWrapper(data.parse_unlabeled_file_to_list_of_dict(Consts.PATH_TO_TEST_UNLABELED_FROM_TEST))
         wrapper.print_klick_to_file()
 
+
 if __name__ == '__main__':
     unittest.main()

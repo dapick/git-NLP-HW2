@@ -12,7 +12,8 @@ class Features:
         self.N = N
         self.features_funcs = {"1": self.feature_1, "2": self.feature_2, "3": self.feature_3, "4": self.feature_4,
                                "5": self.feature_5, "6": self.feature_6, "8": self.feature_8, "10": self.feature_10,
-                               "13": self.feature_13}
+                               "13": self.feature_13, "tags_between": self.feature_tags_between,
+                               "contextual_tags": self.feature_contextual_tags}
 
         if method == Consts.TRAIN:
             self._training(used_features, file_full_name)
@@ -127,16 +128,27 @@ class Features:
         c = hm[1]
         return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c]))]
 
-    def print_features_to_file(self, dir_name: str):
-        with open(dir_name + self.model + '/feature_vector', 'w+') as f:
-            for key, values in self.feature_vector.items():
-                f.write(str(key) + " => " + str(values) + "\n")
+    def feature_tags_between(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        c = hm[1]
+        min_word_idx = min(p, c)
+        max_word_idx = min(p, c)
+        keys = []
+        for word_idx in range(min_word_idx + 1, max_word_idx):
+            keys += [("tags_between", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][word_idx],
+                                       self.hm_data[sen_idx]['tags'][c]))]
+        return keys
 
-        with open(dir_name + self.model + '/h_m_match_to_feature', 'w+') as f:
-            for i, x in enumerate(self.hm_match_feature):
-                f.write(str(i) + " =>\n")
-                for key, val in x.items():
-                    f.write("\t" + str(key) + " => " + str(val) + "\n")
+    def feature_contextual_tags(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        c = hm[1]
+        keys = []
+        for p_shift, c_shift in [(1, 1), (-1, -1), (1, -1), (-1, 1)]:
+            if 0 <= p + p_shift < len(self.hm_data[sen_idx]['tags']) and \
+               0 <= c + c_shift < len(self.hm_data[sen_idx]['tags']):
+                keys += [("tags_between", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][p + p_shift],
+                                           self.hm_data[sen_idx]['tags'][c], self.hm_data[sen_idx]['tags'][c + c_shift]))]
+        return keys
 
     def get_features_idx_per_h_m(self, sen_idx, hm):
         features_idx = []
@@ -155,8 +167,8 @@ class Features:
         self.sentence_hm = {}
 
         for sen_idx, sentence in enumerate(self.hm_data):
-            for i in range(len(sentence['words'])):
-                for j in range(1, len(sentence['words'])):
+            for i in range(len(sentence['words'])-1):
+                for j in range(1, len(sentence['words'])-1):
                     if i == j:
                         continue
                     self.sentence_hm[(sen_idx, (i, j))] = np.array(self.get_features_idx_per_h_m(sen_idx, (i, j)))

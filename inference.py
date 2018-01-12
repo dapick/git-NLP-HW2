@@ -63,7 +63,8 @@ class Inference(object):
                                                      list(labels_list_per_sentence))
         Consts.print_time("Labeling file", time() - t1)
 
-    def calculate_accuracy(self, out_file: str, expected_file: str):
+    @staticmethod
+    def calculate_accuracy(out_file: str, expected_file: str):
         out_dicts = Parsing().parse_labeled_file_to_list_of_dict(out_file)
         exp_dicts = Parsing().parse_labeled_file_to_list_of_dict(expected_file)
 
@@ -71,6 +72,8 @@ class Inference(object):
         count_eq = 0
         for sen_idx, sentence in enumerate(out_dicts):
             for head_idx, head in enumerate(sentence['heads']):
+                if head_idx == 0 or head_idx == len(sentence['heads'])-1:
+                    continue
                 count += 1
                 if sentence['heads'][head_idx] == exp_dicts[sen_idx]['heads'][head_idx]:
                     count_eq += 1
