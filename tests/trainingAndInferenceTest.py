@@ -39,7 +39,9 @@ class MyTestCase(unittest.TestCase):
         inference = Inference(Consts.PATH_TO_TEST_UNLABELED_FROM_TEST, Consts.BASIC_MODEL, N)
         with open('runningTimes', 'a') as f:
             print("Took " + str(time() - t1) + " seconds to label 'basic' with " + str(N) + " iterations", file=f)
-        Inference.calculate_accuracy(inference.labeled_file_name, Consts.PATH_TO_TEST_LABELED_FROM_TEST)
+            print("Accuracy is:",
+                  Inference.calculate_accuracy(inference.labeled_file_name, Consts.PATH_TO_TEST_LABELED_FROM_TEST),
+                  file=f)
 
     def test_N_iterations_advanced(self):
         t1 = time()
@@ -51,7 +53,9 @@ class MyTestCase(unittest.TestCase):
         inference = Inference(Consts.PATH_TO_TEST_UNLABELED_FROM_TEST, Consts.ADVANCED_MODEL, N)
         with open('runningTimes', 'a') as f:
             print("Took " + str(time() - t1) + " seconds to label 'advanced' with " + str(N) + " iterations", file=f)
-        Inference.calculate_accuracy(inference.labeled_file_name, Consts.PATH_TO_TEST_LABELED_FROM_TEST)
+            print("Accuracy is:",
+                  Inference.calculate_accuracy(inference.labeled_file_name, Consts.PATH_TO_TEST_LABELED_FROM_TEST),
+                  file=f)
 
 
 if __name__ == '__main__':

@@ -89,44 +89,50 @@ class Features:
 
     def feature_1(self, sen_idx: int, hm: tuple):
         p = hm[0]
-        return [("1", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p]))]
+        c = hm[1]
+        return [("1", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p], p-c))]
 
     def feature_2(self, sen_idx: int, hm: tuple):
         p = hm[0]
-        return [("2", (self.hm_data[sen_idx]['words'][p]))]
+        c = hm[1]
+        return [("2", (self.hm_data[sen_idx]['words'][p], p-c))]
 
     def feature_3(self, sen_idx: int, hm: tuple):
         p = hm[0]
-        return [("3", (self.hm_data[sen_idx]['tags'][p]))]
+        c = hm[1]
+        return [("3", (self.hm_data[sen_idx]['tags'][p], p-c))]
 
     def feature_4(self, sen_idx: int, hm: tuple):
+        p = hm[0]
         c = hm[1]
-        return [("4", (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c]))]
+        return [("4", (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c], p-c))]
 
     def feature_5(self, sen_idx: int, hm: tuple):
+        p = hm[0]
         c = hm[1]
-        return [("5", (self.hm_data[sen_idx]['words'][c]))]
+        return [("5", (self.hm_data[sen_idx]['words'][c], p-c))]
 
     def feature_6(self, sen_idx: int, hm: tuple):
+        p = hm[0]
         c = hm[1]
-        return [("6", (self.hm_data[sen_idx]['tags'][c]))]
+        return [("6", (self.hm_data[sen_idx]['tags'][c], p-c))]
 
     def feature_8(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
         return [("8", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
-                self.hm_data[sen_idx]['tags'][c]))]
+                self.hm_data[sen_idx]['tags'][c], p-c))]
 
     def feature_10(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
         return [("10", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
-                self.hm_data[sen_idx]['tags'][c]))]
+                self.hm_data[sen_idx]['tags'][c], p-c))]
 
     def feature_13(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c]))]
+        return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c], p-c))]
 
     def feature_tags_between(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -172,7 +178,7 @@ class Features:
                 for j in range(1, len(sentence['words'])-1):
                     if i == j:
                         continue
-                    self.sentence_hm[(sen_idx, (i, j))] = np.array(self.get_features_idx_per_h_m(sen_idx, (i, j)))
+                    self.sentence_hm[(sen_idx, (i, j))] = self.get_features_idx_per_h_m(sen_idx, (i, j))
 
         Consts.print_time("_calculate_features_for_all_sen_hm", time() - t1)
 

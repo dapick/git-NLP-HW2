@@ -25,6 +25,8 @@ class Training:
                 print(feature_weight, file=f)
 
     def get_score(self, sen_idx: int, h: int, m: int):
+        # print("sen_idx:", sen_idx, ", h:", h, ", m:", m)
+        # print("features_idxs:", self.feature.sentence_hm[(sen_idx, (h, m))])
         return np.sum(self.w_parameter[self.feature.sentence_hm[(sen_idx, (h, m))]])
 
     def perceptron(self, N: int):

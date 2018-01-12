@@ -1,4 +1,4 @@
-# BASIC
+------------------------------------------BASIC-----------------------------------------------
 Took 5159.127816915512 seconds to train with 20 iterations
 Took 156.1176245212555 seconds to label with 20 iterations
 Accuracy is: 29.825282631038025%
@@ -10,8 +10,21 @@ Accuracy is: 30.45015416238438%
 Took 22867.469105243683 seconds to train with 100 iterations
 Took 141.8051745891571 seconds to label with 100 iterations
 Accuracy is: 30.244604316546763%
+-----------------------------------------END-BASIC---------------------------------------------
 
 Took 5716.668741703033 seconds to train 'advanced' with 20 iterations
 Took 164.04568433761597 seconds to label 'advanced' with 20 iterations
 Accuracy is: 74.82014388489209%
+
+Took 15142.861382007599 seconds to train 'advanced' with 50 iterations
+Took 190.88483810424805 seconds to label 'advanced' with 50 iterations
+Accuracy is: 74.35149023638232%
+
+Took 6047.632254362106 seconds to train 'basic' with 20 iterations
+Took 84.8011269569397 seconds to label 'basic' with 20 iterations
+Accuracy is: 73.68550873586845%
+
+Took 6462.551666736603 seconds to train 'advanced' with 20 iterations
+Took 122.37578082084656 seconds to label 'advanced' with 20 iterations
+Accuracy is: 81.64028776978417%
 

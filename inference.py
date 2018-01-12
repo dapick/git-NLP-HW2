@@ -78,4 +78,4 @@ class Inference(object):
                 if sentence['heads'][head_idx] == exp_dicts[sen_idx]['heads'][head_idx]:
                     count_eq += 1
 
-        print(str(count_eq * 100 / count) + "%")
+        return str(count_eq * 100 / count) + "%"
