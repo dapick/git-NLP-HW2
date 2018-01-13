@@ -52,8 +52,8 @@ class Inference(object):
 
     def label(self):
         Consts.print_info("label", "Labeling file '" + self.file_full_name + "' by '" + self.model_type + "'")
-        Consts.TIME = 1
-        t1 = time()
+        # Consts.TIME = 1
+        # t1 = time()
 
         # Run parallel
         with Pool(3) as pool:
@@ -61,7 +61,7 @@ class Inference(object):
 
         Parsing().parse_list_of_dict_to_labeled_file(self.labeled_file_name, self.feature.hm_data,
                                                      list(labels_list_per_sentence))
-        Consts.print_time("Labeling file", time() - t1)
+        # Consts.print_time("Labeling file", time() - t1)
 
     @staticmethod
     def calculate_accuracy(out_file: str, expected_file: str):
