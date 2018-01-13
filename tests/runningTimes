@@ -28,7 +28,9 @@ Took 6462.551666736603 seconds to train 'advanced' with 20 iterations
 Took 122.37578082084656 seconds to label 'advanced' with 20 iterations
 Accuracy is: 81.64028776978417%
 
+--------------------------------with p-c in the new features-----------------------------------
 Took 4933.100190162659 seconds to train 'advanced' with 20 iterations
 Took 88.57211637496948 seconds to label 'advanced' with 20 iterations
 Accuracy is: 81.87461459403906%
+-----------------------------------------------------------------------------------------------
 
