@@ -18,7 +18,7 @@ class Consts:
     ADVANCED_MODEL = "advanced"
 
     FEATURE_LIST_BASIC = ["1", "2", "3", "4", "5", "6", "8", "10", "13"]
-    FEATURE_LIST_ADVANCED = ["1", "2", "3", "4", "5", "6", "8", "10", "13", "tags_between", "contextual_tags"]
+    FEATURE_LIST_ADVANCED = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "tags_between", "contextual_tags"]
 
     TIME = 0
 

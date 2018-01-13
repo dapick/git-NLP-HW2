@@ -11,7 +11,8 @@ class Features:
         self.model = model
         self.N = N
         self.features_funcs = {"1": self.feature_1, "2": self.feature_2, "3": self.feature_3, "4": self.feature_4,
-                               "5": self.feature_5, "6": self.feature_6, "8": self.feature_8, "10": self.feature_10,
+                               "5": self.feature_5, "6": self.feature_6, "7": self.feature_7, "8": self.feature_8,
+                               "9": self.feature_9, "10": self.feature_10, "11": self.feature_11, "12": self.feature_12,
                                "13": self.feature_13, "tags_between": self.feature_tags_between,
                                "contextual_tags": self.feature_contextual_tags}
 
@@ -90,49 +91,101 @@ class Features:
     def feature_1(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("1", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("1", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p]))]
+        else:
+            return [("1", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p], p-c))]
 
     def feature_2(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("2", (self.hm_data[sen_idx]['words'][p], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("2", (self.hm_data[sen_idx]['words'][p]))]
+        else:
+            return [("2", (self.hm_data[sen_idx]['words'][p], p-c))]
 
     def feature_3(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("3", (self.hm_data[sen_idx]['tags'][p], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("3", (self.hm_data[sen_idx]['tags'][p]))]
+        else:
+            return [("3", (self.hm_data[sen_idx]['tags'][p], p-c))]
 
     def feature_4(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("4", (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("4", (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c]))]
+        else:
+            return [("4", (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c], p-c))]
 
     def feature_5(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("5", (self.hm_data[sen_idx]['words'][c], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("5", (self.hm_data[sen_idx]['words'][c]))]
+        else:
+            return [("5", (self.hm_data[sen_idx]['words'][c], p-c))]
 
     def feature_6(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("6", (self.hm_data[sen_idx]['tags'][c], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("6", (self.hm_data[sen_idx]['tags'][c]))]
+        else:
+            return [("6", (self.hm_data[sen_idx]['tags'][c], p-c))]
+
+    def feature_7(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        c = hm[1]
+        return [("7", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
+                       self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c]))]
 
     def feature_8(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("8", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
-                self.hm_data[sen_idx]['tags'][c], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("8", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
+                           self.hm_data[sen_idx]['tags'][c]))]
+        else:
+            return [("8", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
+                           self.hm_data[sen_idx]['tags'][c], p-c))]
+
+    def feature_9(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        c = hm[1]
+        return [("9", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['words'][c],
+                       self.hm_data[sen_idx]['tags'][c]))]
 
     def feature_10(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("10", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
-                self.hm_data[sen_idx]['tags'][c], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("10", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
+                            self.hm_data[sen_idx]['tags'][c]))]
+        else:
+            return [("10", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
+                            self.hm_data[sen_idx]['tags'][c], p-c))]
+
+    def feature_11(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        c = hm[1]
+        return [("11", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
+                        self.hm_data[sen_idx]['words'][c]))]
+
+    def feature_12(self, sen_idx: int, hm: tuple):
+        p = hm[0]
+        c = hm[1]
+        return [("12", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['words'][c]))]
 
     def feature_13(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c], p-c))]
+        if self.model == Consts.BASIC_MODEL:
+            return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c]))]
+        else:
+            return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c], p-c))]
 
     def feature_tags_between(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -155,6 +208,13 @@ class Features:
                 keys += [("contextual_tags",
                           (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][p + p_shift],
                            self.hm_data[sen_idx]['tags'][c], self.hm_data[sen_idx]['tags'][c + c_shift]))]
+                keys += [("contextual_tags",
+                          (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][p + p_shift],
+                           self.hm_data[sen_idx]['tags'][c]))] + \
+                        [("contextual_tags",
+                          (self.hm_data[sen_idx]['tags'][p],
+                           self.hm_data[sen_idx]['tags'][c], self.hm_data[sen_idx]['tags'][c + c_shift]))]
+
         return keys
 
     def get_features_idx_per_h_m(self, sen_idx, hm):

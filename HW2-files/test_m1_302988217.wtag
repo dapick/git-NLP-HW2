@@ -14327,7 +14327,7 @@
 6	board	_	NN	_	_	31	_	_	_
 7	had	_	VBD	_	_	17	_	_	_
 8	approved	_	VBN	_	_	24	_	_	_
-9	``	_	``	_	_	3	_	_	_
+9	``	_	``	_	_	30	_	_	_
 10	after	_	IN	_	_	8	_	_	_
 11	an	_	DT	_	_	17	_	_	_
 12	in-depth	_	JJ	_	_	17	_	_	_
@@ -19712,7 +19712,7 @@
 17	--	_	:	_	_	20	_	_	_
 18	before	_	IN	_	_	28	_	_	_
 19	the	_	DT	_	_	21	_	_	_
-20	government	_	NN	_	_	7	_	_	_
+20	government	_	NN	_	_	38	_	_	_
 21	crackdown	_	NN	_	_	22	_	_	_
 22	in	_	IN	_	_	28	_	_	_
 23	China	_	NNP	_	_	21	_	_	_
