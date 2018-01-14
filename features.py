@@ -188,7 +188,8 @@ class Features:
         p = hm[0]
         c = hm[1]
         if self.model == Consts.BASIC_MODEL:
-            return
+            return [("8", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
+                           self.hm_data[sen_idx]['tags'][c]))]
         else:
             direction, distance = self.get_direction_and_distance(p, c)
             p_tag = self.hm_data[sen_idx]['tags'][p]
@@ -295,6 +296,8 @@ class Features:
         features_idx = []
         for feature in self.used_features:
             keys_per_feature = self.features_funcs[feature](sen_idx, hm)
+            if keys_per_feature == None:
+                print("yes")
             for keys in keys_per_feature:
                 if self.feature_vector.get(keys):
                     features_idx.append(self.feature_vector[keys][0])

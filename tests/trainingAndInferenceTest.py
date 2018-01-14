@@ -53,28 +53,17 @@ class MyTestCase(unittest.TestCase):
             Training(Consts.ADVANCED_MODEL, N, Consts.PATH_TO_TRAINING_FROM_TEST, Consts.FEATURE_LIST_ADVANCED)
             with open('runningTimes', 'a') as f:
                 print(file=f)
-                print("Took " + str(time() - t1) + " seconds to train 'advanced' with " + str(N) + " iterations", file=f)
+                print("Took " + str(time() - t1) + " seconds to train 'advanced' with " + str(N) + " iterations",
+                      file=f)
             t1 = time()
             inference = Inference(Consts.PATH_TO_TEST_UNLABELED_FROM_TEST, Consts.ADVANCED_MODEL, N)
             with open('runningTimes', 'a') as f:
-                print("Took " + str(time() - t1) + " seconds to label 'advanced' with " + str(N) + " iterations", file=f)
+                print("Took " + str(time() - t1) + " seconds to label 'advanced' with " + str(N) + " iterations",
+                      file=f)
                 print("Accuracy is:",
                       Inference.calculate_accuracy(inference.labeled_file_name, Consts.PATH_TO_TEST_LABELED_FROM_TEST),
                       file=f)
             copy(inference.labeled_file_name, "../data_from_training/" + Consts.ADVANCED_MODEL + "/" + str(N))
-
-
-    def test_50_iterations(self):
-        t1 = time()
-        Training(Consts.BASIC_MODEL, 50, Consts.PATH_TO_TRAINING_FROM_TEST, Consts.FEATURE_LIST_BASIC)
-        with open('runningTimes', 'a') as f:
-            print("Took " + str(time() - t1) + " seconds to train with 50 iterations", file=f)
-        t1 = time()
-        inference = Inference(Consts.PATH_TO_TEST_UNLABELED_FROM_TEST, Consts.BASIC_MODEL, 50)
-        inference.label()
-        with open('runningTimes', 'a') as f:
-            print("Took " + str(time() - t1) + " seconds to label with 50 iterations", file=f)
-        inference.calculate_accuracy(inference.labeled_file_name, Consts.PATH_TO_TEST_LABELED_FROM_TEST)
 
 
 if __name__ == '__main__':
