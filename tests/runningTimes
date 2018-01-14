@@ -15,9 +15,12 @@ Took 22867.469105243683 seconds to train with 100 iterations
 Took 141.8051745891571 seconds to label with 100 iterations
 Accuracy is: 30.244604316546763%
 -----------------------------------------END-BASIC---------------------------------------------
+# With distance, direction for all features
+Took 7375.774986982346 seconds to train 'advanced' with 20 iterations
+Took 127.11166453361511 seconds to label 'advanced' with 20 iterations
+Accuracy is: 83.34224049331964%
 
-Took 7119.349967241287 seconds to train 'advanced' with 20 iterations
-Took 160.10787153244019 seconds to label 'advanced' with 20 iterations
-Accuracy is: 82.61870503597122%
-
-
+# With and without distance, direction for all features
+Took 10126.407053470612 seconds to train 'advanced' with 20 iterations
+Took 218.9143671989441 seconds to label 'advanced' with 20 iterations
+Accuracy is: 84.67420349434738%

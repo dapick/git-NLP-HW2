@@ -88,13 +88,28 @@ class Features:
 
         return feature_idx
 
+    @staticmethod
+    def get_direction_and_distance(parent, child):
+        direction = 'R' if child > parent else 'L'
+        distance = abs(parent - child)
+        if 5 < distance < 10:
+            distance = 5
+        elif distance > 10:
+            distance = 10
+        return direction, distance
+
     def feature_1(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
         if self.model == Consts.BASIC_MODEL:
             return [("1", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p]))]
         else:
-            return [("1", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            p_word = self.hm_data[sen_idx]['words'][p]
+            p_tag = self.hm_data[sen_idx]['tags'][p]
+            keys = [("1", (p_word, p_tag))]
+            keys += [("1", (p_word, p_tag, direction, distance))]
+            return keys
 
     def feature_2(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -102,7 +117,11 @@ class Features:
         if self.model == Consts.BASIC_MODEL:
             return [("2", (self.hm_data[sen_idx]['words'][p]))]
         else:
-            return [("2", (self.hm_data[sen_idx]['words'][p], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            p_word = self.hm_data[sen_idx]['words'][p]
+            keys = [("2", p_word)]
+            keys += [("2", (p_word, direction, distance))]
+            return keys
 
     def feature_3(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -110,7 +129,11 @@ class Features:
         if self.model == Consts.BASIC_MODEL:
             return [("3", (self.hm_data[sen_idx]['tags'][p]))]
         else:
-            return [("3", (self.hm_data[sen_idx]['tags'][p], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            p_tag = self.hm_data[sen_idx]['tags'][p]
+            keys = [("3", p_tag)]
+            keys += [("3", (p_tag, direction, distance))]
+            return keys
 
     def feature_4(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -118,7 +141,12 @@ class Features:
         if self.model == Consts.BASIC_MODEL:
             return [("4", (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c]))]
         else:
-            return [("4", (self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            c_word = self.hm_data[sen_idx]['words'][c]
+            c_tag = self.hm_data[sen_idx]['tags'][c]
+            keys = [("4", (c_word, c_tag))]
+            keys += [("4", (c_word, c_tag, direction, distance))]
+            return keys
 
     def feature_5(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -126,7 +154,11 @@ class Features:
         if self.model == Consts.BASIC_MODEL:
             return [("5", (self.hm_data[sen_idx]['words'][c]))]
         else:
-            return [("5", (self.hm_data[sen_idx]['words'][c], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            c_word = self.hm_data[sen_idx]['words'][c]
+            keys = [("5", c_word)]
+            keys += [("5", (c_word, direction, distance))]
+            return keys
 
     def feature_6(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -134,29 +166,48 @@ class Features:
         if self.model == Consts.BASIC_MODEL:
             return [("6", (self.hm_data[sen_idx]['tags'][c]))]
         else:
-            return [("6", (self.hm_data[sen_idx]['tags'][c], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            c_tag = self.hm_data[sen_idx]['tags'][c]
+            keys = [("6", c_tag)]
+            keys += [("6", (c_tag, direction, distance))]
+            return keys
 
     def feature_7(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("7", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
-                       self.hm_data[sen_idx]['words'][c], self.hm_data[sen_idx]['tags'][c]))]
+        direction, distance = self.get_direction_and_distance(p, c)
+        p_word = self.hm_data[sen_idx]['words'][p]
+        p_tag = self.hm_data[sen_idx]['tags'][p]
+        c_word = self.hm_data[sen_idx]['words'][c]
+        c_tag = self.hm_data[sen_idx]['tags'][c]
+        keys = [("7", (p_word, p_tag, c_word, c_tag))]
+        keys += [("7", (p_word, p_tag,c_word, c_tag, direction, distance))]
+        return keys
 
     def feature_8(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
         if self.model == Consts.BASIC_MODEL:
-            return [("8", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
-                           self.hm_data[sen_idx]['tags'][c]))]
+            return
         else:
-            return [("8", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['words'][c],
-                           self.hm_data[sen_idx]['tags'][c], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            p_tag = self.hm_data[sen_idx]['tags'][p]
+            c_word = self.hm_data[sen_idx]['words'][c]
+            c_tag = self.hm_data[sen_idx]['tags'][c]
+            keys = [("8", (p_tag, c_word, c_tag))]
+            keys += [("8", (p_tag, c_word, c_tag, direction, distance))]
+            return keys
 
     def feature_9(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("9", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['words'][c],
-                       self.hm_data[sen_idx]['tags'][c]))]
+        direction, distance = self.get_direction_and_distance(p, c)
+        p_word = self.hm_data[sen_idx]['words'][p]
+        c_word = self.hm_data[sen_idx]['words'][c]
+        c_tag = self.hm_data[sen_idx]['tags'][c]
+        keys = [("9", (p_word, c_word, c_tag))]
+        keys += [("9", (p_word, c_word, c_tag, direction, distance))]
+        return keys
 
     def feature_10(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -165,19 +216,34 @@ class Features:
             return [("10", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
                             self.hm_data[sen_idx]['tags'][c]))]
         else:
-            return [("10", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
-                            self.hm_data[sen_idx]['tags'][c], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            p_word = self.hm_data[sen_idx]['words'][p]
+            p_tag = self.hm_data[sen_idx]['tags'][p]
+            c_tag = self.hm_data[sen_idx]['tags'][c]
+            keys = [("10", (p_word, p_tag, c_tag))]
+            keys += [("10", (p_word, p_tag, c_tag, direction, distance))]
+            return keys
 
     def feature_11(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("11", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['tags'][p],
-                        self.hm_data[sen_idx]['words'][c]))]
+        direction, distance = self.get_direction_and_distance(p, c)
+        p_word = self.hm_data[sen_idx]['words'][p]
+        p_tag = self.hm_data[sen_idx]['tags'][p]
+        c_word = self.hm_data[sen_idx]['words'][c]
+        keys = [("11", (p_word, p_tag, c_word))]
+        keys += [("11", (p_word, p_tag, c_word, direction, distance))]
+        return keys
 
     def feature_12(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
-        return [("12", (self.hm_data[sen_idx]['words'][p], self.hm_data[sen_idx]['words'][c]))]
+        direction, distance = self.get_direction_and_distance(p, c)
+        p_word = self.hm_data[sen_idx]['words'][p]
+        c_word = self.hm_data[sen_idx]['words'][c]
+        keys = [("12", (p_word, c_word))]
+        keys += [("12", (p_word, c_word, direction, distance))]
+        return keys
 
     def feature_13(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -185,7 +251,10 @@ class Features:
         if self.model == Consts.BASIC_MODEL:
             return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c]))]
         else:
-            return [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c], p-c))]
+            direction, distance = self.get_direction_and_distance(p, c)
+            keys = [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c]))]
+            keys += [("13", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][c], direction, distance))]
+            return keys
 
     def feature_tags_between(self, sen_idx: int, hm: tuple):
         p = hm[0]
@@ -193,28 +262,33 @@ class Features:
         min_word_idx = min(p, c)
         max_word_idx = max(p, c)
         keys = []
+        direction, distance = self.get_direction_and_distance(p, c)
+        p_tag = self.hm_data[sen_idx]['tags'][p]
+        c_tag = self.hm_data[sen_idx]['tags'][c]
         for word_idx in range(min_word_idx + 1, max_word_idx):
-            keys += [("tags_between", (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][word_idx],
-                                       self.hm_data[sen_idx]['tags'][c]))]
+            keys += [("tags_between", (p_tag, self.hm_data[sen_idx]['tags'][word_idx], c_tag))]
+            keys += [("tags_between", (p_tag, self.hm_data[sen_idx]['tags'][word_idx], c_tag, direction, distance))]
         return keys
 
     def feature_contextual_tags(self, sen_idx: int, hm: tuple):
         p = hm[0]
         c = hm[1]
         keys = []
+        direction, distance = self.get_direction_and_distance(p, c)
+        p_tag = self.hm_data[sen_idx]['tags'][p]
+        c_tag = self.hm_data[sen_idx]['tags'][c]
         for p_shift, c_shift in [(1, 1), (-1, -1), (1, -1), (-1, 1)]:
             if 0 <= p + p_shift < len(self.hm_data[sen_idx]['tags']) and \
                0 <= c + c_shift < len(self.hm_data[sen_idx]['tags']):
-                keys += [("contextual_tags",
-                          (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][p + p_shift],
-                           self.hm_data[sen_idx]['tags'][c], self.hm_data[sen_idx]['tags'][c + c_shift]))]
-                keys += [("contextual_tags",
-                          (self.hm_data[sen_idx]['tags'][p], self.hm_data[sen_idx]['tags'][p + p_shift],
-                           self.hm_data[sen_idx]['tags'][c]))] + \
-                        [("contextual_tags",
-                          (self.hm_data[sen_idx]['tags'][p],
-                           self.hm_data[sen_idx]['tags'][c], self.hm_data[sen_idx]['tags'][c + c_shift]))]
+                p_shift_tag = self.hm_data[sen_idx]['tags'][p + p_shift]
+                c_shift_tag = self.hm_data[sen_idx]['tags'][c + c_shift]
+                keys += [("contextual_tags", (p_tag, p_shift_tag, c_tag, c_shift_tag))]
+                keys += [("contextual_tags", (p_tag, p_shift_tag, c_tag, c_shift_tag, direction, distance))]
 
+                keys += [("contextual_tags", (p_tag, p_shift_tag, c_tag, direction, distance))] + \
+                        [("contextual_tags", (p_tag, c_tag, c_shift_tag, direction, distance))]
+                keys += [("contextual_tags", (p_tag, p_shift_tag, c_tag))] + \
+                        [("contextual_tags", (p_tag, c_tag, c_shift_tag))]
         return keys
 
     def get_features_idx_per_h_m(self, sen_idx, hm):
