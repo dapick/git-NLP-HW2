@@ -296,8 +296,6 @@ class Features:
         features_idx = []
         for feature in self.used_features:
             keys_per_feature = self.features_funcs[feature](sen_idx, hm)
-            if keys_per_feature == None:
-                print("yes")
             for keys in keys_per_feature:
                 if self.feature_vector.get(keys):
                     features_idx.append(self.feature_vector[keys][0])
