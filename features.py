@@ -32,6 +32,8 @@ class Features:
         self.hm_data = Parsing().parse_labeled_file_to_list_of_dict(file_full_name)
 
         self._light_features()
+        self._reduce_features()
+
         self.features_amount = len(self.feature_vector)
         self.sentences_amount = len(self.hm_data)
 
@@ -296,8 +298,7 @@ class Features:
         features_idx = []
         for feature in self.used_features:
             keys_per_feature = self.features_funcs[feature](sen_idx, hm)
-            if keys_per_feature == None:
-                print("yes")
+
             for keys in keys_per_feature:
                 if self.feature_vector.get(keys):
                     features_idx.append(self.feature_vector[keys][0])
@@ -339,3 +340,16 @@ class Features:
         for feature_type in self.used_features:
             count_feature = sum([1 if feature_num == feature_type else 0 for feature_num, _ in self.feature_vector])
             Consts.print_info("feature_" + feature_type, "Has " + str(count_feature) + " features")
+
+    def _reduce_features(self):
+        Consts.print_info("_reduce_features", "Reducing")
+        self.idx = 0
+        survived_features = {}
+        survived_occurrences = []
+        for feature_key, feature_value in self.feature_vector.items():
+            if feature_value[1] > 5:
+                survived_features[feature_key] = (self.idx, feature_value[1])
+                survived_occurrences.append(feature_value[1])
+                self.idx += 1
+        self.feature_vector = survived_features
+        self.features_occurrences = survived_occurrences
