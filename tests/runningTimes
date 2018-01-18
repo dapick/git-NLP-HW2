@@ -1,19 +1,20 @@
 ------------------------------------------BASIC-----------------------------------------------
-Took 6316.6156442165375 seconds to train 'basic' with 20 iterations
-Took 70.42924952507019 seconds to label 'basic' with 20 iterations
-Accuracy is: 29.825282631038025%
+# Basic again after the fix
+Took 5427.891957044601 seconds to train 'basic' with 20 iterations
+Took 62.803688049316406 seconds to label 'basic' with 20 iterations
+Accuracy is: 29.434737923946557%
 
-Took 8793.629161119461 seconds to train 'basic' with 50 iterations
-Took 73.83613419532776 seconds to label 'basic' with 50 iterations
-Accuracy is: 30.746145940390544%
+Took 7696.9567840099335 seconds to train 'basic' with 50 iterations
+Took 62.1629958152771 seconds to label 'basic' with 50 iterations
+Accuracy is: 30.91880781089414%
 
-Took 18889.881851434708 seconds to train with 80 iterations
-Took 141.34323525428772 seconds to label with 80 iterations
-Accuracy is: 30.45015416238438%
+Took 7565.8061583042145 seconds to train 'basic' with 80 iterations
+Took 63.83505034446716 seconds to label 'basic' with 80 iterations
+Accuracy is: 30.28982528263104%
 
-Took 22867.469105243683 seconds to train with 100 iterations
-Took 141.8051745891571 seconds to label with 100 iterations
-Accuracy is: 30.244604316546763%
+Took 5069.362295150757 seconds to train 'basic' with 100 iterations
+Took 62.60054039955139 seconds to label 'basic' with 100 iterations
+Accuracy is: 30.24049331963001%
 -----------------------------------------END-BASIC---------------------------------------------
 # With distance, direction for all features
 Took 7375.774986982346 seconds to train 'advanced' with 20 iterations
@@ -24,3 +25,12 @@ Accuracy is: 83.34224049331964%
 Took 10126.407053470612 seconds to train 'advanced' with 20 iterations
 Took 218.9143671989441 seconds to label 'advanced' with 20 iterations
 Accuracy is: 84.67420349434738%
+
+# Using LIL sparse matrix for w_parameter
+# Still need to fix
+
+# After changing chu-liu because of Itay
+Took 16603.79892349243 seconds to train 'advanced' with 20 iterations
+Took 249.27613401412964 seconds to label 'advanced' with 20 iterations
+Accuracy is: 84.48098663926002%
+

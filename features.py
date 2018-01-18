@@ -32,7 +32,7 @@ class Features:
         self.hm_data = Parsing().parse_labeled_file_to_list_of_dict(file_full_name)
 
         self._light_features()
-        self._reduce_features()
+        # self._reduce_features()
 
         self.features_amount = len(self.feature_vector)
         self.sentences_amount = len(self.hm_data)
