@@ -34,3 +34,14 @@ Took 16603.79892349243 seconds to train 'advanced' with 20 iterations
 Took 249.27613401412964 seconds to label 'advanced' with 20 iterations
 Accuracy is: 84.48098663926002%
 
+Took 14514.024714946747 seconds to train 'advanced' with 50 iterations
+Took 209.75715589523315 seconds to label 'advanced' with 50 iterations
+Accuracy is: 84.90441932168551%
+
+Took 15231.232052326202 seconds to train 'advanced' with 80 iterations
+Took 214.82017397880554 seconds to label 'advanced' with 80 iterations
+Accuracy is: 84.86742034943474%
+
+Took 10604.68544125557 seconds to train 'advanced' with 100 iterations
+Took 217.0162374973297 seconds to label 'advanced' with 100 iterations
+Accuracy is: 84.85097636176774%
