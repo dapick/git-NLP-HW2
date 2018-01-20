@@ -56,7 +56,7 @@ class Parsing:
     def parse_labeled_file_to_unlabeled_file(file_full_name: str):
         tmp_parse = Parsing()
         tmp_parse.parse_labeled_file_to_list_of_dict(file_full_name)
-        file_unlabeled = file_full_name.replace('.labeled', '.unlabeled')
+        file_unlabeled = file_full_name.replace('.wtag', '.unlabeled')
         with open(file_unlabeled, 'w+') as f:
             for sentence in tmp_parse.labeled_table_data:
                 for idx in range(1, len(sentence['words'])-1):
