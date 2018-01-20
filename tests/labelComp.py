@@ -13,6 +13,12 @@ class MyTestCase(unittest.TestCase):
         print("Finished labeling comp file by 'basic'")
         copy(inference.labeled_file_name, "../data_from_training/" + Consts.BASIC_MODEL + "/" + str(N))
 
+    def test_label_comp_by_advanced(self):
+        N = 50
+        inference = Inference(Consts.PATH_TO_COMPETITION_FROM_TEST, Consts.ADVANCED_MODEL, N)
+        print("Finished labeling comp file by 'basic'")
+        copy(inference.labeled_file_name, "../data_from_training/" + Consts.ADVANCED_MODEL + "/" + str(N))
+
 
 if __name__ == '__main__':
     unittest.main()
