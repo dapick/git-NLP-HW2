@@ -48,8 +48,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_N_iterations_advanced(self):
         t1 = time()
-        # for N in [20, 50, 80, 100]:
-        for N in [20]:
+        for N in [20, 50, 80, 100]:
             Training(Consts.ADVANCED_MODEL, N, Consts.PATH_TO_TRAINING_FROM_TEST, Consts.FEATURE_LIST_ADVANCED)
             with open('runningTimes', 'a') as f:
                 print(file=f)
