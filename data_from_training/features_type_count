@@ -10,18 +10,18 @@ BASIC:
 -I-(feature_13): Has 749 features
 
 ADVANCED:
--I-(feature_1): Has 35506 features
--I-(feature_2): Has 33598 features
--I-(feature_3): Has 986 features
--I-(feature_4): Has 31833 features
--I-(feature_5): Has 30526 features
--I-(feature_6): Has 1387 features
--I-(feature_7): Has 71232 features
--I-(feature_8): Has 46235 features
--I-(feature_9): Has 70401 features
--I-(feature_10): Has 52139 features
--I-(feature_11): Has 70679 features
--I-(feature_12): Has 69819 features
--I-(feature_13): Has 6196 features
--I-(feature_tags_between): Has 8753 features
--I-(feature_contextual_tags): Has 69820 features
+-I-(feature_1): Has 40890 features
+-I-(feature_2): Has 37774 features
+-I-(feature_3): Has 330 features
+-I-(feature_4): Has 44963 features
+-I-(feature_5): Has 41851 features
+-I-(feature_6): Has 465 features
+-I-(feature_7): Has 151788 features
+-I-(feature_8): Has 74055 features
+-I-(feature_9): Has 150427 features
+-I-(feature_10): Has 82280 features
+-I-(feature_11): Has 150880 features
+-I-(feature_12): Has 149468 features
+-I-(feature_13): Has 4137 features
+-I-(feature_tags_between): Has 30137 features
+-I-(feature_contextual_tags): Has 207507 features
