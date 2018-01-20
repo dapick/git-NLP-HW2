@@ -16,19 +16,6 @@ Took 5069.362295150757 seconds to train 'basic' with 100 iterations
 Took 62.60054039955139 seconds to label 'basic' with 100 iterations
 Accuracy is: 30.24049331963001%
 -----------------------------------------END-BASIC---------------------------------------------
-# With distance, direction for all features
-Took 7375.774986982346 seconds to train 'advanced' with 20 iterations
-Took 127.11166453361511 seconds to label 'advanced' with 20 iterations
-Accuracy is: 83.34224049331964%
-
-# With and without distance, direction for all features
-Took 10126.407053470612 seconds to train 'advanced' with 20 iterations
-Took 218.9143671989441 seconds to label 'advanced' with 20 iterations
-Accuracy is: 84.67420349434738%
-
-# Using LIL sparse matrix for w_parameter
-# Still need to fix
-
 # After changing chu-liu because of Itay
 Took 16603.79892349243 seconds to train 'advanced' with 20 iterations
 Took 249.27613401412964 seconds to label 'advanced' with 20 iterations
